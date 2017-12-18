@@ -1,0 +1,135 @@
+
+<table class="table table-striped books-list-table" style="margin: 50px auto; padding: 10px;">
+
+    <thead>
+    <tr>
+        <th>Путь текущей директории</th>
+        <th><?=$current_dir_view?></th>
+        <th></th>
+    </tr>
+
+    <tr>
+
+        <th>
+            <?php if(!$current_dir_is_root){?>
+            <form method='post'>
+
+                <button type="submit" class="btn btn-info btn-sm" aria-label="Left Align" name="approve">
+                    <span class="glyphicon glyphicon-arrow-up" aria-hidden="true">  Выше  </span>
+                    <input name="current_dir" type="hidden" value="<?=$one_level_up_dir?>">
+                </button>
+
+            </form>
+            <?php }else{;?>
+            <button type="submit" class="btn btn-danger btn-sm" aria-label="Left Align" name="approve">
+                <span  aria-hidden="true">Выше некуда</span>
+            </button>
+            <?php };?>
+            </th>
+        <th></th>
+        <th></th>
+    </tr>
+
+
+
+    </thead>
+    <tbody>
+
+    <tr>
+
+        <form method='post'>
+            <td>
+                Cоздать новую папку
+                <input name="new_dir" value="">
+                <input name="current_dir" type="hidden" value="<?=$current_dir?>">
+                <input name="current_dir_view" type="hidden" value="<?=$current_dir_view?>">
+            </td>
+            <td>
+                <button type="submit" class="btn btn-success btn-sm" aria-label="Left Align" name="approve">
+                    <span  aria-hidden="true">Создать</span>
+                </button>
+            </td>
+        </form>
+        <td>
+
+        </td>
+    </tr>
+
+    <tr>
+        <th>Название файла</th>
+        <th>Размер файла</th>
+        <th>Действия</th>
+
+    </tr>
+    <?php foreach ($all_folders as $folder) :?>
+        <tr>
+            <?php $file_name=$folder->file_name;?>
+
+            <form method='post'>
+                    <td>
+                        <?php $this_dir=$current_dir . DS . $file_name;
+                        if($folder->does_folder_name_contains_numbers!=''):?>
+                            <button type="submit" class="btn btn-warning btn-sm" aria-label="Left Align" name="approve">
+                                <span class="glyphicon glyphicon-lock" aria-hidden="true">   <?=$file_name?></span>
+                                <input name="current_dir" type="hidden" value="<?=$this_dir?>">
+                            </button>
+                        <?php else:?>
+                            <button type="submit" class="btn btn-success btn-sm" aria-label="Left Align" name="approve">
+                                <span  aria-hidden="true"><?=$file_name?></span>
+                                <input name="current_dir" type="hidden" value="<?=$this_dir?>">
+                            </button>
+                        <?php endif;?>
+                    </td>
+            </form>
+            <td>
+                директория
+            </td>
+            <td>
+                <form method='post'>
+                    <input name="folder_delete" type="hidden" value="<?=true?>">
+                    <button type="submit" class="btn btn-danger btn-sm" aria-label="Left Align" name="approve">
+                        <input name="current_dir" type="hidden" value="<?=$this_dir?>">
+
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </button>
+
+                </form>
+            </td>
+
+
+        </tr>
+    <?php endforeach;?>
+
+    <?php foreach ($all_files as $file) :?>
+        <tr>
+            <?php $file_name=$file->file_name;?>
+
+
+
+                <td>
+                    <?=$file_name?>
+                </td>
+
+                <td>
+                    <?=$file->file_size . ' Мб'?>
+                </td>
+
+            <td>
+                <form method='post'>
+                    <input name="file_delete" type="hidden" value="<?=true?>">
+                    <button type="submit" class="btn btn-danger btn-sm" aria-label="Left Align" name="approve">
+                        <input name="current_dir" type="hidden" value="<?=$current_dir?>">
+                        <input name="file_name" type="hidden" value="<?=$file_name?>">
+
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </button>
+
+                </form>
+            </td>
+
+        </tr>
+    <?php endforeach;?>
+
+
+    </tbody>
+</table>
